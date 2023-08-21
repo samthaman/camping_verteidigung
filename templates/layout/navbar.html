@@ -1,0 +1,57 @@
+<!-- Add new Elements to the navigation in the list below.
+ First column = route / Second column = function in main file / Third column = text label
+ Don't forget to set active_page in html file!
+ -->
+{% set navigation_bar = [
+    ('/', 'landing_page', 'Home'),
+    ('/sites', 'sites_page', 'Camping Sites'),
+    ('/histograms', 'histograms_page', 'Histograms'),
+    ('/corr', 'correlation_page', 'Correlations')
+] -%}
+
+{% set active_page = active_page|default('landing_page') -%}
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="{{ "/" }}">Camping Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+              {% for href, id, caption in navigation_bar %}
+              <li class="nav-item">
+              <a {% if id == active_page %} class="nav-link active"{% endif %} {& elif class="nav-link" &} href="{{ href|e }}">{{ caption|e }}</a>
+              </li>
+              {% endfor %}
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
