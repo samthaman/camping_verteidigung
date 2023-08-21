@@ -1,0 +1,22 @@
+{% extends '/layout/layout.html'%}
+{% set active_page = "landing_page" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <h1>About</h1>
+    <p>
+        This Dashboard was developed as a part of the masterthesis by Samuel Weber-Martin.
+        The aim is to visualise the data collected for the master thesis.
+    </p>
+
+    <h1>Data</h1>
+    <p>
+        The data about the camping sites was harvested from <a href="www.gocamping.ch">www.gomcamping.ch</a>.
+        Aditionally the data about the postal codes with their association to the canton and the language area was downloaded from:
+        <a href="https://swisspost.opendatasoft.com/explore/dataset/plz_verzeichnis_v2/information/">https://swisspost.opendatasoft.com/explore/dataset/plz_verzeichnis_v2/information/</a>.
+        Licence: <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY</a>
+    </p>
+{% endblock %}

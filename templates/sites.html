@@ -1,0 +1,86 @@
+{% extends 'layout/layout.html'%}
+{% set active_page = "sites_page" %}
+
+{% block title %}
+    Camping Sites
+{% endblock %}
+
+{% block content %}
+    <h1>Camping Sites</h1>
+    <p>These are all the camping sites. Click on any camping site on the map to show details.</p>
+
+    <div class="dropdown"></div>
+    <div id="chart"></div>
+    <div id="details" class="d-none">
+        <div class="row">
+            <h2 id="name" class="p-3"></h2>
+        </div>
+        <div class="container justify-content-start">
+            <div class="row">
+            <div class="col p-3">
+                <img class="img-thumbnail" style="width:300px" id="site_image" /><br><br>
+                <h3>Address</h3>
+                <div id="address"></div><br>
+                <h3>Canton</h3>
+                <div id="canton"></div><br>
+                <h3>Language Region</h3>
+                <div id="langArea"></div><br>
+                <h3>Prices</h3>
+                <ul id="prices"></ul>
+            </div>
+
+            <div class="col p-3 ms-auto">
+                <h3>Amenities</h3>
+                <ul id="amenities"></ul>
+            </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        var graphs = {{graphJSON | safe}};
+        var df = {{ dfJSON | safe }};
+        Plotly.plot('chart', graphs, {});
+        // console.log(Object.values(df['description.name']));
+
+        $('#chart').on('plotly_click', function(ev, data) {
+            $( "#details" ).removeClass( "d-none" )
+
+            var site = df[data.points[0].customdata]
+
+            $('#name').text(site['description.name']);
+            $('#address').text(site['description.address.streetAddress']);
+            $('#canton').text(site['description.canton']);
+            $('#langArea').text(site['description.langArea']);
+            $('#site_image').attr('src', site['description.image']);
+            $('#site_address').text(site['description.address.streetAddress']);
+
+            // Amenitites as list items
+            $('#amenities').text('')
+            $.each(site['description.amenities'], function(key, value) {
+                $('#amenities').append($('<li/>').text(value))
+            });
+
+            // Prices for the site
+            $('#prices').text('')
+            $.each(site, function(key, value) {
+                if ((/^price./i.test(key)) && !(/.description$/i.test(key))) {
+                    if (value !== null ) {
+                        $('#prices').append($('<li/>').text(key + ": CHF " + value.toFixed(2)))
+                    }
+                }
+            });
+
+            // Complete description only needed for developement
+            //$('#details').text(JSON.stringify(site));
+
+        });
+    </script>
+{% endblock %}

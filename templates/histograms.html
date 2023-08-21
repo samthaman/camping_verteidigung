@@ -1,0 +1,64 @@
+{% extends 'layout/layout.html'%}
+{% set active_page = "histogram_page" %}
+
+{% block title %}
+    Histograms
+{% endblock %}
+
+{% block content %}
+    <h1>Histograms</h1>
+    <p>On this page you can choose to display a histogram for any variable you pick from the list.</p>
+<div class="d-flex flex-row pt-5 justify-content-center" onchange="update_graph()">
+    <div class="d-flex flex-row">
+        <div class="p-2">
+            X-axis:
+        </div>
+        <div>
+            <select id="variable" class="form-select" aria-label="Default select example"></select><br>
+        </div>
+    </div>
+</div>
+
+<div id="chart">
+</div>
+<br><br><br><br>
+
+{% endblock %}
+
+
+
+{% block script %}
+
+    <script type="text/javascript">
+
+            // function generating the plotly graph
+            function update_graph() {
+                let variable = columns[$('#variable').val()]
+
+                var trace = {
+                    x: Object.values(df[variable]),
+                    type: 'histogram',
+                  };
+                var data = [trace];
+
+                Plotly.newPlot('chart', data);
+            }
+
+        var columns = {{columns | safe}};
+        var df = {{ dfJSON | safe }};
+
+        // Loop through the columns array and append each option to the x_axis and y_axis menus
+        $.each(columns, function(index, value) {
+            $('#variable').append($('<option></option>').val(index).html(value));
+        });
+
+        // pre-select menu items (need to supply the index, not value)
+        $('#variable').val(3);
+        console.log(df);
+        update_graph();
+
+    </script>
+
+
+
+{% endblock %}
